@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Privacy | Your Application</title>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>SecureApp</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#" class="active">Help & Privacy</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h3>Help & Privacy</h3>
+            <ul>
+                <li><a href="#help" class="active" data-section="help">Help Center</a></li>
+                <li><a href="#faq" data-section="faq">Frequently Asked Questions</a></li>
+                <li><a href="#contact" data-section="contact">Contact Support</a></li>
+                <li><a href="#privacy" data-section="privacy">Privacy Policy</a></li>
+                <li><a href="#data" data-section="data">Data Usage</a></li>
+                <li><a href="#cookies" data-section="cookies">Cookies Policy</a></li>
+                <li><a href="#terms" data-section="terms">Terms of Service</a></li>
+            </ul>
+        </aside>
+
+        <!-- Content Sections -->
+        <main class="content">
+            <!-- Help Center Section -->
+            <section id="help" class="content-section active">
+                <h2><i class="fas fa-question-circle"></i> Help Center</h2>
+                <p>Welcome to our Help Center. Here you'll find resources and guides to help you get the most out of our services.</p>
+                
+                <h3>Getting Started</h3>
+                <p>If you're new to our platform, follow these steps to begin:</p>
+                <ol>
+                    <li>Create your account using your email address</li>
+                    <li>Verify your email through the link we send you</li>
+                    <li>Set up your profile with relevant information</li>
+                    <li>Explore our features and customize your settings</li>
+                </ol>
+                
+                <h3>Common Tasks</h3>
+                <ul>
+                    <li><strong>Account Management:</strong> Update your profile, change password, manage notifications</li>
+                    <li><strong>Privacy Settings:</strong> Control who can see your information and activity</li>
+                    <li><strong>Data Export:</strong> Download your personal data at any time</li>
+                    <li><strong>Troubleshooting:</strong> Solutions for common technical issues</li>
+                </ul>
+                
+                <h3>Need More Help?</h3>
+                <p>If you can't find what you're looking for, please check our <a href="#faq" class="section-link">FAQ section</a> or <a href="#contact" class="section-link">contact our support team</a> directly.</p>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="content-section">
+                <h2><i class="fas fa-comments"></i> Frequently Asked Questions</h2>
+                <p>Find quick answers to the most common questions about our services.</p>
+                
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <span>How do I reset my password?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To reset your password, go to the login page and click "Forgot Password". Enter your email address, and we'll send you a link to create a new password. Make sure to check your spam folder if you don't see the email in your inbox.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How can I delete my account?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To delete your account, go to Settings > Account > Delete Account. Please note that this action is permanent and all your data will be removed from our systems within 30 days. You may request a data export before deleting your account.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is my personal information secure?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we use industry-standard encryption and security measures to protect your data. We never sell your personal information to third parties. For more details, please review our <a href="#privacy" class="section-link">Privacy Policy</a>.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I change my privacy settings?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Navigate to Settings > Privacy to adjust who can see your profile, contact you, or view your activity. You can customize these settings for different aspects of our service.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer customer support?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer customer support via email and live chat during business hours (9 AM - 6 PM EST, Monday to Friday). You can also browse our help documentation for instant answers to common questions.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="content-section">
+                <h2><i class="fas fa-headset"></i> Contact Support</h2>
+                <p>Our support team is here to help you with any questions or issues you may have. Please fill out the form below and we'll get back to you as soon as possible.</p>
+                
+                <div class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" required>
+                            <option value="" disabled selected>Select an issue type</option>
+                            <option value="account">Account Issues</option>
+                            <option value="technical">Technical Problems</option>
+                            <option value="privacy">Privacy Concerns</option>
+                            <option value="billing">Billing Questions</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" placeholder="Please describe your issue in detail..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3>Other Ways to Reach Us</h3>
+                    <p><strong>Email:</strong> support@secureapp.example.com</p>
+                    <p><strong>Phone:</strong> +1 (800) 123-4567 (Available Mon-Fri, 9AM-6PM EST)</p>
+                    <p><strong>Live Chat:</strong> Available on our website during business hours</p>
+                </div>
+            </section>
+
+            <!-- Privacy Policy Section -->
+            <section id="privacy" class="content-section">
+                <h2><i class="fas fa-user-shield"></i> Privacy Policy</h2>
+                <p>Last updated: June 15, 2023</p>
+                
+                <h3>Information We Collect</h3>
+                <p>We collect information you provide directly to us, such as when you create an account, update your profile, or contact us for support. This may include:</p>
+                <ul>
+                    <li>Name, email address, and contact information</li>
+                    <li>Profile information and preferences</li>
+                    <li>Communications with our support team</li>
+                    <li>Payment information for premium services</li>
+                </ul>
+                
+                <h3>How We Use Your Information</h3>
+                <p>We use the information we collect to:</p>
+                <ul>
+                    <li>Provide, maintain, and improve our services</li>
+                    <li>Respond to your comments and questions</li>
+                    <li>Send you technical notices and support messages</li>
+                    <li>Monitor and analyze usage patterns</li>
+                    <li>Detect, prevent, and address technical issues</li>
+                </ul>
+                
+                <h3>Information Sharing</h3>
+                <p>We do not sell your personal information to third parties. We may share information only in the following circumstances:</p>
+                <ul>
+                    <li>With your consent</li>
+                    <li>To comply with legal obligations</li>
+                    <li>To protect the rights and safety of our users</li>
+                    <li>With service providers who assist in our operations</li>
+                </ul>
+                
+                <h3>Data Security</h3>
+                <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+            </section>
+
+            <!-- Data Usage Section -->
+            <section id="data" class="content-section">
+                <h2><i class="fas fa-database"></i> Data Usage</h2>
+                <p>We are transparent about how we use your data. This section explains our data practices in detail.</p>
+                
+                <h3>Data Collection Methods</h3>
+                <p>We collect data through:</p>
+                <ul>
+                    <li><strong>Direct interactions:</strong> Information you provide when using our services</li>
+                    <li><strong>Automated technologies:</strong> Data collected automatically as you interact with our services</li>
+                    <li><strong>Third parties:</strong> Information from publicly available sources or partners (with consent)</li>
+                </ul>
+                
+                <h3>Data Retention</h3>
+                <p>We retain your personal information only for as long as necessary to fulfill the purposes for which it was collected, including for legal, accounting, or reporting requirements.</p>
+                
+                <h3>Your Data Rights</h3>
+                <p>Depending on your location, you may have the following rights regarding your personal data:</p>
+                <ul>
+                    <li><strong>Access:</strong> Request copies of your personal data</li>
+                    <li><strong>Rectification:</strong> Request correction of inaccurate data</li>
+                    <li><strong>Erasure:</strong> Request deletion of your personal data</li>
+                    <li><strong>Restriction:</strong> Request limitation of processing your data</li>
+                    <li><strong>Portability:</strong> Request transfer of your data to another service</li>
+                    <li><strong>Objection:</strong> Object to our processing of your data</li>
+                </ul>
+                
+                <p>To exercise any of these rights, please contact us using the information in our <a href="#contact" class="section-link">Contact Support</a> section.</p>
+            </section>
+
+            <!-- Cookies Policy Section -->
+            <section id="cookies" class="content-section">
+                <h2><i class="fas fa-cookie-bite"></i> Cookies Policy</h2>
+                <p>We use cookies and similar tracking technologies to enhance your experience on our platform.</p>
+                
+                <h3>What Are Cookies?</h3>
+                <p>Cookies are small data files placed on your device when you visit our website. They help us remember your preferences and understand how you interact with our services.</p>
+                
+                <h3>Types of Cookies We Use</h3>
+                <ul>
+                    <li><strong>Essential cookies:</strong> Necessary for the website to function properly</li>
+                    <li><strong>Preference cookies:</strong> Remember your settings and preferences</li>
+                    <li><strong>Analytics cookies:</strong> Help us understand how visitors use our website</li>
+                    <li><strong>Marketing cookies:</strong> Used to deliver relevant advertisements</li>
+                </ul>
+                
+                <h3>Managing Cookies</h3>
+                <p>Most web browsers allow you to control cookies through their settings preferences. However, limiting cookies may affect your experience on our website.</p>
+                
+                <p>You can usually find these settings in the "Options" or "Preferences" menu of your browser. The following links provide information about cookie settings for popular browsers:</p>
+                <ul>
+                    <li><a href="#" target="_blank">Chrome</a></li>
+                    <li><a href="#" target="_blank">Firefox</a></li>
+                    <li><a href="#" target="_blank">Safari</a></li>
+                    <li><a href="#" target="_blank">Edge</a></li>
+                </ul>
+            </section>
+
+            <!-- Terms of Service Section -->
+            <section id="terms" class="content-section">
+                <h2><i class="fas fa-file-contract"></i> Terms of Service</h2>
+                <p>By using our services, you agree to these terms. Please read them carefully.</p>
+                
+                <h3>Acceptance of Terms</h3>
+                <p>By accessing and using our services, you accept and agree to be bound by these Terms of Service. If you do not agree, you may not use our services.</p>
+                
+                <h3>User Responsibilities</h3>
+                <p>As a user of our services, you agree to:</p>
+                <ul>
+                    <li>Provide accurate and complete information</li>
+                    <li>Maintain the security of your account credentials</li>
+                    <li>Use our services in compliance with all applicable laws</li>
+                    <li>Not engage in unauthorized access or use of our systems</li>
+                    <li>Not attempt to disrupt or interfere with our services</li>
+                </ul>
+                
+                <h3>Service Modifications</h3>
+                <p>We reserve the right to modify or discontinue our services at any time, with or without notice. We are not liable to you or any third party for any modification, suspension, or discontinuance of our services.</p>
+                
+                <h3>Limitation of Liability</h3>
+                <p>To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services.</p>
+                
+                <h3>Changes to Terms</h3>
+                <p>We may update these Terms of Service from time to time. We will notify you of any changes by posting the new terms on this page and updating the "Last updated" date.</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="#help">Help Center</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#">Community Forum</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#cookies">Cookies Policy</a></li>
+                    <li><a href="#data">Data Usage</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container copyright">
+            <p>&copy; 2023 SecureApp. All rights reserved.</p>
+            <p>This site is protected by reCAPTCHA and the Google <a href="#" style="color:#4dabf7;">Privacy Policy</a> and <a href="#" style="color:#4dabf7;">Terms of Service</a> apply.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
