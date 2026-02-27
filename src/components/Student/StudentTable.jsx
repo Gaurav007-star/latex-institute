@@ -43,8 +43,7 @@ import { CustomMainModal } from "../custom/CustomMainModal";
 import { Card, CardContent } from "../ui/card";
 import { IoWarning } from "react-icons/io5";
 import { apiFetch } from "@/api/apiFetch";
-import { useDispatch, useSelector } from "react-redux";
-import { getTemplate } from "@/store/slices/template";
+
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -59,6 +58,8 @@ import { DialogClose } from "../ui/dialog";
 import toast from "react-hot-toast";
 import { Spinner } from "../ui/spinner";
 import { List } from "lucide-react";
+import { fetchAllUsers, unlinkUserHandler } from "@/store/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const students = [
   {
@@ -138,8 +139,9 @@ const StudentTable = ({ search }) => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [active, setActive] = useState(true);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.User)
+
+
 
   // Filter students based on search
   const searchStudents = useMemo(() => {
@@ -157,7 +159,7 @@ const StudentTable = ({ search }) => {
 
   // Sort students
   const sortedStudents = useMemo(() => {
-    let sortableData = [...searchStudents];
+    let sortableData = [...users];
 
     if (sortConfig.key) {
       sortableData.sort((a, b) => {
@@ -192,12 +194,17 @@ const StudentTable = ({ search }) => {
     }
 
     return sortableData;
-  }, [searchStudents, sortConfig]);
+  }, [searchStudents, sortConfig, users]);
 
   const dataSource = sortedStudents;
 
   const pageSize = 5; // Changed to 5 for demo with 5 students
   const totalPages = Math.ceil(dataSource.length / pageSize);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchAllUsers({ page }))
+  }, [])
 
   // Update page data when dataSource changes
   useEffect(() => {
@@ -280,26 +287,27 @@ const StudentTable = ({ search }) => {
     );
   };
 
-  // Handlers for the actions
-  const onDeactivateHandler = (id) => {
-    toast.success(`User ${id} deactivated`);
-    // Add your API call logic here
-  };
-
   const onActivateHandler = (id) => {
     toast.success(`User ${id} activated`);
     // Add your API call logic here
   };
 
-  const onDeleteHandler = (id) => {
-    alert("User deleted");
+  const [unlinkLoading, setUnlinkLoading] = useState(false);
+  const onDeleteHandler = (removeUser) => {
+    const user = {
+      "userId": removeUser.publicUserId,
+      "email": removeUser.publicEmail
+    }
+    dispatch(unlinkUserHandler({ user, setLoading: setUnlinkLoading })).then(() => {
+      dispatch(fetchAllUsers({page:1}))
+    })
   };
 
   return (
-    <div className="w-full h-max">
+    <div className="w-full h-max rounded-xl border border-border overflow-hidden">
       {/* TABLE SECTION */}
       <Table>
-        <TableHeader className="text-sm bg-muted">
+        <TableHeader className="bg-muted text-sm h-[8vh]">
           <TableRow>
             {/* <TableHead className="w-[50px] rounded-tl-2xl h-[8vh] text-center">
               <Checkbox
@@ -313,34 +321,34 @@ const StudentTable = ({ search }) => {
             </TableHead> */}
 
             <TableHead
-              className="w-[150px] h-[8vh] rounded-tl-2xl cursor-pointer"
+              className="w-[150px] cursor-pointer"
               onClick={() => handleSort("name")}
             >
               Name
             </TableHead>
 
             <TableHead
-              className="h-[8vh] w-[200px] text-center cursor-pointer"
+              className=" w-[200px] text-center cursor-pointer"
               onClick={() => handleSort("email")}
             >
               Email
             </TableHead>
 
             <TableHead
-              className="h-[8vh] text-center cursor-pointer"
+              className=" text-center cursor-pointer"
               onClick={() => handleSort("rollNumber")}
             >
               Id
             </TableHead>
 
             <TableHead
-              className="h-[8vh] text-center cursor-pointer"
+              className="text-center cursor-pointer"
               onClick={() => handleSort("status")}
             >
               Status
             </TableHead>
 
-            <TableHead className="rounded-tr-2xl h-[8vh] text-center">
+            <TableHead className=" text-center">
               Actions
             </TableHead>
           </TableRow>
@@ -366,12 +374,12 @@ const StudentTable = ({ search }) => {
 
                   <TableCell className="font-medium h-[8vh]">
                     <div className="flex items-center gap-3">
-                      <div className="size-8 rounded-full bg-gray-200 flex items-center justify-center">
+                      <div className="size-8 rounded-full bg-accent flex items-center justify-center">
                         <span className="font-medium">
-                          {student.name.charAt(0)}
+                          {student?.publicName.charAt(0)}
                         </span>
                       </div>
-                      <span className="font-medium">{student.name}</span>
+                      <span className="font-medium">{student?.publicName}</span>
                     </div>
                   </TableCell>
 
@@ -379,21 +387,21 @@ const StudentTable = ({ search }) => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <span className="truncate max-w-[200px] inline-block">
-                          {student.email}
+                          {student?.publicEmail}
                         </span>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <span>{student.email}</span>
+                        <span>{student?.publicEmail}</span>
                       </TooltipContent>
                     </Tooltip>
                   </TableCell>
 
                   <TableCell className="text-center h-[8vh]">
-                    {student.rollNumber}
+                    {student?.publicUserId}
                   </TableCell>
 
                   <TableCell className="text-center h-[8vh]">
-                    <StatusBadge status={student.status} />
+                    <StatusBadge status={student?.status} />
                   </TableCell>
 
                   <TableCell className="h-[8vh] flex items-center justify-center gap-2">
@@ -412,10 +420,10 @@ const StudentTable = ({ search }) => {
                           // If active: Show Deactivate
                           <DropdownMenuItem
                             className="text-red-600 cursor-pointer"
-                            onClick={() => onDeactivateHandler(student.id)}
+                            onClick={() => onDeleteHandler(student)}
                           >
                             <MdBlock className="mr-2 size-4" />
-                            Deactivate
+                            {unlinkLoading ? "Unlinking..." : "Unlink"}
                           </DropdownMenuItem>
                         ) : (
                           // If inactive/suspended: Show Activate and Delete
@@ -429,10 +437,10 @@ const StudentTable = ({ search }) => {
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="text-gray-700 cursor-pointer"
-                              onClick={() => onDeleteHandler(student.id)}
+                              onClick={() => onDeleteHandler(student)}
                             >
                               <MdDeleteOutline className="mr-2 size-4" />
-                              Delete
+                              {unlinkLoading ? "Unlinking..." : "Unlink"}
                             </DropdownMenuItem>
                           </>
                         )}

@@ -24,7 +24,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (auth.user || auth.token) {
-      navigate("/template", { replace: true });
+      navigate("/organization", { replace: true });
     }
   }, [auth.user, auth.token, navigate]);
 
@@ -46,7 +46,7 @@ const Signup = () => {
 
         // Remove localStorage data
         localStorage.removeItem("user-email");
-        navigate("/template");
+        navigate("/organization");
       } else {
         toast.error("Registration failed. Unexpected response from server.");
       }

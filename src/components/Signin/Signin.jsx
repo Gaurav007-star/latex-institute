@@ -10,8 +10,8 @@ import { useAuth } from "@/context/AuthProvider";
 import { Spinner } from "../ui/spinner";
 
 const Signin = () => {
-  const [adminData, setAdminData] = useState({
-    email: "",
+  const [institute, setInstitute] = useState({
+    username: "",
     password: "",
   });
 
@@ -21,53 +21,54 @@ const Signin = () => {
 
   useEffect(() => {
     if (auth.user || auth.token) {
-      navigate("/template", { replace: true });
+      navigate("/organization", { replace: true });
     }
   }, [auth.user, auth.token, navigate]);
 
   // Form submit handler --> Login logic
-  // const FormSubmitHandler = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     setLoading(true);
-  //     const response = await apiFetch("/auth/sign-in", {
-  //       method: "POST",
-  //       body: JSON.stringify(adminData),
-  //     });
+  const FormSubmitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      setLoading(true);
+      const response = await apiFetch("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(institute),
+      });
 
-  //     if (response.success === false) {
-  //       toast.error(response.message);
-  //     } else if (response && response.authToken) {
-  //       await auth.setTokenAndFetchUser(response.authToken);
-  //       navigate("/template");
-  //     } else {
-  //       toast.error("Login failed. Unexpected response from server.");
-  //     }
-  //   } catch (err) {
-  //     if (err instanceof ApiError) {
-  //       if (err.status === 400) {
-  //         toast.error("Enter a valid email and password.");
-  //       } else if (err.status === 401 || err.status === 403) {
-  //         toast.error("Invalid email or password.");
-  //       } else {
-  //         toast.error(`${err.message}`);
-  //       }
-  //     } else if (err instanceof Error) {
-  //       toast.error(`${err.message}`);
-  //     } else {
-  //       toast.error("An unknown error occurred during login.");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //     setAdminData({
-  //       email: "",
-  //       password: "",
-  //     });
-  //   }
-  // };
+      if (response.success === false) {
+        toast.error(response.message, { id: "Auth-toast" });
+      } else if (response && response.authToken) {
+        await auth.setTokenAndFetchUser(response.authToken);
+        setInstitute({
+          username: "",
+          password: "",
+        });
+        navigate("/organization");
+      } else {
+        toast.error("Login failed. Unexpected response from server.", { id: "Auth-toast" });
+      }
+    } catch (err) {
+      if (err instanceof ApiError) {
+        if (err.status === 400) {
+          toast.error("Enter a valid email and password.", { id: "Auth-toast" });
+        } else if (err.status === 401 || err.status === 403) {
+          toast.error("Invalid email or password.", { id: "Auth-toast" });
+        } else {
+          toast.error(`${err.message}`, { id: "Auth-toast" });
+        }
+      } else if (err instanceof Error) {
+        toast.error(`${err.message}`, { id: "Auth-toast" });
+      } else {
+        toast.error("An unknown error occurred during login.", { id: "Auth-toast" });
+      }
+    } finally {
+      setLoading(false);
+
+    }
+  };
 
   const setAdminValue = (e) => {
-    setAdminData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setInstitute((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -75,7 +76,7 @@ const Signin = () => {
       <img
         src={Background}
         alt=""
-        className="w-full h-full object-cover object-center absolute inset-0 opacity-50"
+        className="w-full h-full object-cover object-center absolute inset-0 opacity-50 hidden"
       />
       <form
         // onSubmit={FormSubmitHandler}
@@ -89,10 +90,11 @@ const Signin = () => {
 
         <InputGroup className={`w-full h-max`}>
           <InputGroupInput
-            placeholder="Enter email"
+            type="text"
+            placeholder="Enter username"
             className={`w-full h-[7vh] rounded-full `}
-            value={adminData.email}
-            name={"email"}
+            value={institute.username}
+            name={"username"}
             onChange={setAdminValue}
           />
         </InputGroup>
@@ -102,15 +104,16 @@ const Signin = () => {
             type={"password"}
             placeholder="Enter password"
             className={`w-full h-[7vh] rounded-full`}
-            value={adminData.password}
+            value={institute.password}
             name={"password"}
             onChange={setAdminValue}
           />
         </InputGroup>
         <Button
-          className={`w-full h-[7vh] rounded-full text-center cursor-pointer`}
+          className={`w-full h-[7vh] rounded-md text-center cursor-pointer`}
+          onClick={FormSubmitHandler}
         >
-          {loading ? <Spinner className={`size-5`}/> : "Sign in"}
+          {loading ? <Spinner className={`size-5`} /> : "Sign in"}
         </Button>
       </form>
     </div>

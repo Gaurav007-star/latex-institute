@@ -42,11 +42,11 @@ import { AuthProvider, useAuth } from "@/context/AuthProvider";
 const Home = () => {
   const navigate = useNavigate();
 
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   const [searchParams] = useSearchParams();
   const view = searchParams.get("view") || "/";
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const { setTheme: setContextTheme } = useTheme();
 
@@ -56,19 +56,19 @@ const Home = () => {
 
   const LogoutHAndler = () => {
     logout();
-    navigate("/login");
+    navigate("/signin");
   };
 
   return (
     <div className="w-full min-h-screen bg-background">
-      <div className="navbar-section w-full h-[10vh] flex items-center justify-between gap-4 px-5 border-b border-sidebar-border">
-        {/* LEFT PART */}
+      <div className="navbar-section w-full h-[10vh] flex items-center justify-between gap-4 px-5">
+
         <div className="left-part w-max h-max flex items-center gap-4">
           {/* OPEN CLOSE ICON SECTION */}
           <SidebarTrigger />
         </div>
 
-        {/* RIGHT PART */}
+
         <div className="right-part w-max h-max flex items-center gap-2">
           {/* THEME CHANGER */}
           <div
@@ -83,7 +83,7 @@ const Home = () => {
               })
             }
           >
-            {theme === "dark" ? <PiMoonLight className="text-muted-foreground"/> : <PiSunDimLight/>}
+            {theme === "dark" ? <PiMoonLight className="text-muted-foreground" /> : <PiSunDimLight />}
           </div>
 
           {/* USER AVATAR */}
@@ -102,7 +102,7 @@ const Home = () => {
                 aria-label="Open menu"
                 className="flex items-center cursor-pointer text-primary"
               >
-                <span>Admin</span>{" "}
+                <span>{user ? user.portalUsername : "Admin"}</span>{" "}
                 <MdOutlineKeyboardArrowDown className="text-[24px]" />
               </button>
             </DropdownMenuTrigger>

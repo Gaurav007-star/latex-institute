@@ -30,7 +30,7 @@ export const configureApiFetch = (logoutCallback) => {
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://api-latex-admin.demome.in/api";
+  "https://api-institute.latexio.com/api";
 
 export const apiFetch = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;

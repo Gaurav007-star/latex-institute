@@ -27,32 +27,75 @@ import { useDropzone } from "react-dropzone";
 import { useCallback, useEffect, useState } from "react";
 import { CustomMainModal } from "../custom/CustomMainModal";
 import { HiOutlineUpload } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux"; // Added Redux import
+import { fetchInstituteDetails } from "@/store/slices/userSlice";
 
 export default function OrganizationProfile() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Fetch institute data from Redux store
+  const { institute } = useSelector((state) => state.User);
+
+  // Initialize state with empty/default values
   const [instituteData, setInstituteData] = useState({
     basicInfo: {
-      officialName: "XYZ University",
-      shortName: "XYZU",
-      instituteType: "University",
-      website: "https://www.xyzuniversity.edu",
-      contactEmail: "info@xyzuniversity.edu",
-      contactPhone: "+1-234-567-8900",
+      officialName: "",
+      shortName: "",
+      instituteType: "",
+      website: "",
+      contactEmail: "",
+      contactPhone: "",
     },
     address: {
-      line1: "123 University Ave",
-      line2: "Building 5",
-      city: "Metropolis",
-      state: "California",
-      country: "USA",
+      line1: "",
+      line2: "",
+      city: "",
+      state: "",
+      country: "",
     },
     representative: {
-      fullName: "John Doe",
-      email: "j.doe@xyzuniversity.edu",
-      phone: "+1-234-567-8901",
-      resignation: "Head of Admissions",
+      fullName: "",
+      email: "",
+      phone: "",
+      resignation: "",
     },
   });
+
+  useEffect(() => {
+    dispatch(fetchInstituteDetails())
+  }, [])
+
+  // Populate state when Redux data loads
+  useEffect(() => {
+    if (institute) {
+      setInstituteData({
+        basicInfo: {
+          officialName: institute.name || "",
+          shortName: institute.shortName || "",
+          instituteType: institute.type || "",
+          website: institute.website || "",
+          contactEmail: institute.email || "",
+          contactPhone: institute.phone || "",
+        },
+        address: {
+          line1: institute.address?.line1 || "",
+          line2: institute.address?.line2 || "", // fallback if empty
+          city: institute.address?.city || "",
+          state: institute.address?.state || "",
+          country: institute.address?.country || "",
+        },
+        representative: {
+          // The API payload doesn't have representative fields directly on the institute object,
+          // so these will remain editable blanks unless you map them from another data source later.
+          fullName: "",
+          email: "",
+          phone: "",
+          resignation: "",
+        },
+      });
+    }
+  }, [institute]);
 
   const handleChange = (section, field, value) => {
     setInstituteData((prev) => ({
@@ -65,7 +108,7 @@ export default function OrganizationProfile() {
   };
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="p-6 space-y-6 w-full mx-auto">
       {/* Header / Overview */}
       <Card>
         <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
@@ -75,17 +118,17 @@ export default function OrganizationProfile() {
             </div>
             <div>
               <h1 className="text-2xl font-semibold">
-                {instituteData.basicInfo.officialName}
+                {instituteData.basicInfo.officialName || "Loading..."}
               </h1>
               <p className="text-sm text-muted-foreground">
-                Institute ID: XYZ-UNI-001
+                Institute ID: {institute?.institute_code || "N/A"}
               </p>
               <div className="flex gap-2 mt-2">
-                <Badge>Active</Badge>
+                <Badge>{institute?.status === "active" ? "Active" : "Inactive"}</Badge>
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <CustomMainModal
               trigger={<Button variant="outline">Edit Profile</Button>}
               Content={
@@ -117,9 +160,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Official Institute Name"
               value={instituteData.basicInfo.officialName}
-              onChange={(e) =>
-                handleChange("basicInfo", "officialName", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Building2 size={16} />
@@ -130,9 +172,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Short Name / Acronym"
               value={instituteData.basicInfo.shortName}
-              onChange={(e) =>
-                handleChange("basicInfo", "shortName", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Hash size={16} />
@@ -143,9 +184,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Institute Type"
               value={instituteData.basicInfo.instituteType}
-              onChange={(e) =>
-                handleChange("basicInfo", "instituteType", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Landmark size={16} />
@@ -156,9 +196,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Website URL"
               value={instituteData.basicInfo.website}
-              onChange={(e) =>
-                handleChange("basicInfo", "website", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Globe size={16} />
@@ -169,9 +208,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Official Contact Email"
               value={instituteData.basicInfo.contactEmail}
-              onChange={(e) =>
-                handleChange("basicInfo", "contactEmail", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Mail size={16} />
@@ -182,9 +220,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Contact Phone Number"
               value={instituteData.basicInfo.contactPhone}
-              onChange={(e) =>
-                handleChange("basicInfo", "contactPhone", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Phone size={16} />
@@ -210,9 +247,8 @@ export default function OrganizationProfile() {
               <InputGroupInput
                 placeholder={item.placeholder}
                 value={instituteData.address[item.field]}
-                onChange={(e) =>
-                  handleChange("address", item.field, e.target.value)
-                }
+                readOnly
+                className={`cursor-not-allowed`}
               />
               <InputGroupAddon>
                 <item.icon size={16} />
@@ -232,9 +268,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Full Name"
               value={instituteData.representative.fullName}
-              onChange={(e) =>
-                handleChange("representative", "fullName", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <User size={16} />
@@ -246,9 +281,8 @@ export default function OrganizationProfile() {
               placeholder="Email Address"
               type="email"
               value={instituteData.representative.email}
-              onChange={(e) =>
-                handleChange("representative", "email", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Mail size={16} />
@@ -260,9 +294,8 @@ export default function OrganizationProfile() {
               placeholder="Phone Number"
               type="tel"
               value={instituteData.representative.phone}
-              onChange={(e) =>
-                handleChange("representative", "phone", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Phone size={16} />
@@ -273,9 +306,8 @@ export default function OrganizationProfile() {
             <InputGroupInput
               placeholder="Resignation"
               value={instituteData.representative.resignation}
-              onChange={(e) =>
-                handleChange("representative", "resignation", e.target.value)
-              }
+              readOnly
+              className={`cursor-not-allowed`}
             />
             <InputGroupAddon>
               <Briefcase size={16} />
@@ -291,7 +323,6 @@ const ImportFileComponent = () => {
   const [file, setFile] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
     console.log(acceptedFiles);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -318,35 +349,17 @@ const ImportFileComponent = () => {
   );
 };
 
-const InstituteFormInputs = ({ data, onChange }) => {
-  // Internal copy of data
-  const [localData, setLocalData] = useState({ ...data });
-
-  // Update localData if `data` prop changes
-  useEffect(() => {
-    setLocalData({ ...data });
-  }, [data]);
-
-  // Internal handle change
-  const handleLocalChange = (section, field, value) => {
-    setLocalData((prev) => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value,
-      },
-    }));
-  };
-
+// Fixed: Now directly updates parent state using the passed handleChange function
+const InstituteFormInputs = ({ data, handleChange }) => {
   return (
     <div className="w-[700px] h-max grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Basic Info */}
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Official Institute Name"
-          value={localData.basicInfo.officialName}
+          value={data.basicInfo.officialName}
           onChange={(e) =>
-            handleLocalChange("basicInfo", "officialName", e.target.value)
+            handleChange("basicInfo", "officialName", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -357,9 +370,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Short Name / Acronym"
-          value={localData.basicInfo.shortName}
+          value={data.basicInfo.shortName}
           onChange={(e) =>
-            handleLocalChange("basicInfo", "shortName", e.target.value)
+            handleChange("basicInfo", "shortName", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -370,9 +383,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Institute Type"
-          value={localData.basicInfo.instituteType}
+          value={data.basicInfo.instituteType}
           onChange={(e) =>
-            handleLocalChange("basicInfo", "instituteType", e.target.value)
+            handleChange("basicInfo", "instituteType", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -383,9 +396,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Website URL"
-          value={localData.basicInfo.website}
+          value={data.basicInfo.website}
           onChange={(e) =>
-            handleLocalChange("basicInfo", "website", e.target.value)
+            handleChange("basicInfo", "website", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -396,9 +409,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Official Contact Email"
-          value={localData.basicInfo.contactEmail}
+          value={data.basicInfo.contactEmail}
           onChange={(e) =>
-            handleLocalChange("basicInfo", "contactEmail", e.target.value)
+            handleChange("basicInfo", "contactEmail", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -409,9 +422,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Contact Phone Number"
-          value={localData.basicInfo.contactPhone}
+          value={data.basicInfo.contactPhone}
           onChange={(e) =>
-            handleLocalChange("basicInfo", "contactPhone", e.target.value)
+            handleChange("basicInfo", "contactPhone", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -430,9 +443,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
         <InputGroup className="w-full h-[8vh]" key={item.field}>
           <InputGroupInput
             placeholder={item.placeholder}
-            value={localData.address[item.field]}
+            value={data.address[item.field]}
             onChange={(e) =>
-              handleLocalChange("address", item.field, e.target.value)
+              handleChange("address", item.field, e.target.value)
             }
           />
           <InputGroupAddon>
@@ -445,9 +458,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Full Name"
-          value={localData.representative.fullName}
+          value={data.representative.fullName}
           onChange={(e) =>
-            handleLocalChange("representative", "fullName", e.target.value)
+            handleChange("representative", "fullName", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -458,9 +471,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Email Address"
-          value={localData.representative.email}
+          value={data.representative.email}
           onChange={(e) =>
-            handleLocalChange("representative", "email", e.target.value)
+            handleChange("representative", "email", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -471,9 +484,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Phone Number"
-          value={localData.representative.phone}
+          value={data.representative.phone}
           onChange={(e) =>
-            handleLocalChange("representative", "phone", e.target.value)
+            handleChange("representative", "phone", e.target.value)
           }
         />
         <InputGroupAddon>
@@ -484,9 +497,9 @@ const InstituteFormInputs = ({ data, onChange }) => {
       <InputGroup className="w-full h-[8vh]">
         <InputGroupInput
           placeholder="Resignation"
-          value={localData.representative.resignation}
+          value={data.representative.resignation}
           onChange={(e) =>
-            handleLocalChange("representative", "resignation", e.target.value)
+            handleChange("representative", "resignation", e.target.value)
           }
         />
         <InputGroupAddon>

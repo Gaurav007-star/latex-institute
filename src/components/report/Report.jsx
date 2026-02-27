@@ -106,7 +106,7 @@ export default function Report() {
 function Stat({ label, value, icon }) {
   const Icon = icon;
   return (
-    <div className="flex flex-col gap-10 rounded-2xl bg-white px-6 py-5 shadow-sm">
+    <div className="flex flex-col gap-10 rounded-2xl bg-background px-6 py-5 shadow-sm border border-border">
       {/* Label */}
       <p className="text-lg font-semibold text-muted-foreground">{label}</p>
 
