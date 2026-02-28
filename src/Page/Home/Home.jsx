@@ -69,7 +69,7 @@ const Home = () => {
     <div className="relative w-full min-h-screen">
       <div className="navbar-section w-full h-max flex items-center justify-between gap-4 px-5 py-2">
 
-        <div className="ai-chat-box fixed bottom-10 right-10 p-4 bg-primary rounded-full">
+        <div className="ai-chat-box fixed bottom-10 right-10 p-4 bg-primary rounded-full z-50 hover:scale-105 transition-transform duration-300 cursor-pointer">
           <FaRobot className="text-[24px] text-white" />
         </div>
 

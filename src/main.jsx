@@ -12,7 +12,7 @@ import { store } from "./store/store";
 
 createRoot(document.getElementById("root")).render(
   <>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Provider store={store}>
       <AuthProvider>
         <SidebarProvider>

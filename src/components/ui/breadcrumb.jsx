@@ -42,7 +42,8 @@ function BreadcrumbLink({
   className,
   ...props
 }) {
-  const Comp = asChild ? Slot.Root : "a"
+  // FIXED: Changed Slot.Root to Slot
+  const Comp = asChild ? Slot : "a"
 
   return (
     <Comp
