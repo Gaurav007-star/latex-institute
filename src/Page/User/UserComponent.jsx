@@ -36,11 +36,12 @@ import {
   ImportIcon,
   MailIcon,
   Plus,
-  Check
+  Check,
+  CalendarIcon
 } from "lucide-react";
 import { apiFetch } from "@/api/apiFetch";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import clsx from "clsx";
 import StudentTable from "@/components/Student/StudentTable";
@@ -48,6 +49,7 @@ import { HiOutlineUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserHandler, clearSearchUsers, fetchAllUsers, searchUsersHandler } from "@/store/slices/userSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 const options = [
   {
@@ -69,8 +71,21 @@ const UserComponent = () => {
 
 
   return (
-    <div className="w-full min-h-screen bg-background p-5">
-      <Card className="w-full bg-background rounded-xl ">
+    <div className="w-full min-h-screen p-6 space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/user">User</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <Card>
         <CardHeader
           className={`w-full h-max flex items-center justify-between`}
         >
@@ -171,133 +186,89 @@ const ImportFileComponent = () => {
 };
 
 const AddStudentComponent = ({ closeModal }) => {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [allUsers, setAllUsers] = useState({
-    userIds: [],
-    emails: []
+  const [formData, setFormData] = useState({
+    email: "",
+    code: "",
+    expairy: "",
+    department: "",
   });
-
-  const { searchUsers } = useSelector((state) => state.User);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  // Handler to select users
-  const handleSelectUser = (user) => {
-    setAllUsers((prev) => ({
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      userIds: [...prev.userIds, user._id],
-      emails: [...prev.emails, user.email]
-    }));
-    setEmail("");
-    setHasSearched(false);
-  };
-
-  // Handler to remove users
-  const handleDeselectUser = (user) => {
-    setAllUsers((prev) => ({
-      ...prev,
-      userIds: prev.userIds.filter((id) => id !== user._id),
-      emails: prev.emails.filter((email) => email !== user.email)
+      [name]: value,
     }));
   };
 
-  // Handler to search users
-  const handleSearchUser = (e) => {
-    e.preventDefault();
-    if (!email) {
-      toast.error("Please enter email", { id: "add-student-error" });
-      return;
-    }
-    setHasSearched(true);
-    dispatch(searchUsersHandler({ keyword: email, setLoading, setEmail }));
-  };
-
-  // Main handler to add new user
-  const handleAddUser = () => {
-    dispatch(addUserHandler({ allUsers, setLoading })).then(() => {
-      dispatch(fetchAllUsers({page:1}));
+  const handleAddUser = async () => {
+    dispatch(addUserHandler({ formData, setLoading })).then(() => {
+      dispatch(fetchAllUsers({ page: 1 }));
     })
     closeModal();
   }
 
-  const ClearDataHandler = () => {
-    dispatch(clearSearchUsers())
-    setEmail("")
-    setHasSearched(false)
-    setAllUsers({
-      userIds: [],
-      emails: []
-    })
-  }
 
 
   return (
-    <div className="add-student-component w-[600px] h-max overflow-y-auto file-scrollbar">
-      <InputGroup className={`h-[7vh] w-full`}>
+    <div className="add-student-component w-[600px] h-max overflow-y-auto space-y-4 file-scrollbar">
+
+
+      <InputGroup className={`h-[8vh] w-full`}>
         <InputGroupInput
           type="email"
           placeholder="Enter email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setHasSearched(false);
-          }} />
+          name="email"
+          value={formData.email}
+          onChange={handleChange} />
         <InputGroupAddon>
           <MailIcon />
         </InputGroupAddon>
       </InputGroup>
-      {/* user list */}
-      <div className={clsx("user-list w-full max-h-[300px] flex flex-col gap-2 overflow-y-auto file-scrollbar", searchUsers.length > 0 ? "py-4 " : "py-2")}>
-        {
-          searchUsers.length > 0 && (
-            searchUsers.map((user) => (
-              <div key={user._id} className="flex items-center justify-between p-2  bg-muted/20 rounded-md">
-                <div className="flex items-center gap-2">
-                  <Avatar>
-                    <AvatarImage src={user.avatar} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{user.name}</span>
-                    <span className="text-xs text-muted-foreground">{user.email}</span>
-                  </div>
-                </div>
-                {
-                  allUsers.emails.includes(user.email) ? (
-                    <Button variant="outline" className={`h-[6vh]`} onClick={() => handleDeselectUser(user)}>
-                      Unselect
-                    </Button>
-                  ) : (
-                    <Button variant="outline" className={`h-[6vh]`} onClick={() => handleSelectUser(user)}>
-                      Select
-                    </Button>
-                  )
-                }
-              </div>
-            ))
-          )
-        }
-        {
-          hasSearched && searchUsers.length === 0 && !loading && (
-            <p className="p-4 dark:bg-muted/20 bg-muted! rounded-md text-center text-foreground">
-              No users found
-            </p>
-          )
-        }
 
-      </div>
+      <InputGroup className={`h-[8vh] w-full`}>
+        <InputGroupInput
+          type="text"
+          placeholder="Employee code / Roll No."
+          name="code"
+          value={formData.code}
+          onChange={handleChange} />
+        <InputGroupAddon>
+          <MailIcon />
+        </InputGroupAddon>
+      </InputGroup>
 
-      <div className="button-section w-full h-max flex items-center justify-between gap-2">
-        <div className="left">
-          <Button variant="outline" onClick={handleAddUser} className={`h-[6vh]`} disabled={allUsers.emails.length === 0}>Add User</Button>
-        </div>
+      <InputGroup className={`h-[8vh] w-full`}>
+        <InputGroupInput
+          type="date"
+          placeholder="Expiry date"
+          name="expairy"
+          value={formData.expairy}
+          onChange={handleChange} />
+        <InputGroupAddon>
+          <CalendarIcon />
+        </InputGroupAddon>
+      </InputGroup>
 
-        <div className="right flex items-center justify-end gap-2">
-          <Button variant="outline" onClick={closeModal} className={`h-[6vh]`}>Close</Button>
-          <Button variant="outline" onClick={ClearDataHandler} className={`h-[6vh]`}>Clear</Button>
-          <Button onClick={handleSearchUser} className={`h-[6vh]`} disabled={loading || !validator.isEmail(email)}>{loading ? "Searching..." : "Search"}</Button>
-        </div>
+      <InputGroup className={`h-[8vh] w-full`}>
+        <InputGroupInput
+          type="text"
+          placeholder="Department"
+          name="department"
+          value={formData.department}
+          onChange={handleChange} />
+        <InputGroupAddon>
+          <CalendarIcon />
+        </InputGroupAddon>
+      </InputGroup>
+
+
+
+      <div className="button-section w-full h-max flex items-center justify-end gap-4">
+        <Button variant="outline" onClick={closeModal} className={`h-[6vh]`}>Close</Button>
+        <Button onClick={handleAddUser} className={`h-[6vh]`} disabled={loading || !validator.isEmail(formData.email)}>{loading ? "Searching..." : "Add User"}</Button>
       </div>
     </div>
   );

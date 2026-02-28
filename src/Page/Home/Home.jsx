@@ -38,11 +38,15 @@ import Pricing from "@/components/Pricing/Pricing";
 import Article from "@/components/Article/Article";
 import { AppSidebar } from "@/components/custom/AppSidebar";
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
+import { useDispatch } from "react-redux";
+import { fetchInstituteDetails } from "@/store/slices/userSlice";
+import { FaRobot } from "react-icons/fa";
+
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const [searchParams] = useSearchParams();
   const view = searchParams.get("view") || "/";
 
@@ -50,8 +54,10 @@ const Home = () => {
 
   const { setTheme: setContextTheme } = useTheme();
 
+  const dispatch = useDispatch();
   useEffect(() => {
     setContextTheme(theme);
+    dispatch(fetchInstituteDetails())
   }, [theme]);
 
   const LogoutHAndler = () => {
@@ -60,19 +66,22 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-background">
-      <div className="navbar-section w-full h-[10vh] flex items-center justify-between gap-4 px-5">
+    <div className="relative w-full min-h-screen">
+      <div className="navbar-section w-full h-max flex items-center justify-between gap-4 px-5 py-2">
+
+        <div className="ai-chat-box fixed bottom-10 right-10 p-4 bg-primary rounded-full">
+          <FaRobot className="text-[24px] text-white" />
+        </div>
 
         <div className="left-part w-max h-max flex items-center gap-4">
           {/* OPEN CLOSE ICON SECTION */}
           <SidebarTrigger />
         </div>
 
-
-        <div className="right-part w-max h-max flex items-center gap-2">
+        <div className="right-part w-max h-max flex items-center gap-2 ">
           {/* THEME CHANGER */}
           <div
-            className="theme-changer text-[20px] bg-muted p-2 rounded-full cursor-pointer"
+            className="theme-changer text-[20px] p-2 rounded-full cursor-pointer"
             onClick={() =>
               setTheme((prev) => {
                 if (prev === "dark") {
@@ -100,7 +109,7 @@ const Home = () => {
             >
               <button
                 aria-label="Open menu"
-                className="flex items-center cursor-pointer text-primary"
+                className="flex items-center cursor-pointer text-foreground"
               >
                 <span>{user ? user.portalUsername : "Admin"}</span>{" "}
                 <MdOutlineKeyboardArrowDown className="text-[24px]" />

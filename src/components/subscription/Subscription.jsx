@@ -4,11 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Users } from "lucide-react";
 import { Progress } from "../ui/progress";
 import InvoiceTable from "./InvoiveTable";
-
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Link } from "react-router";
 
 const Subscription = () => {
   return (
-    <div className="w-full min-h-screen bg-background p-6 space-y-6">
+    <div className="w-full min-h-screen bg-background p-6 space-y-6">      <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link to="/billing">Billing</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
       {/* ===================== SUBSCRIPTION SUMMARY ===================== */}
       <Card className="rounded-2xl">
         <CardHeader
@@ -18,12 +31,12 @@ const Subscription = () => {
             <CardTitle className="text-2xl font-semibold">
               Subscriptions and add-ons
             </CardTitle>
-            {/* <span className="text-primary">Manage your subscription</span> */}
+            {/* <span className="text-foreground">Manage your subscription</span> */}
           </div>
 
           <div className="right-section w-max text-right">
             <CardTitle className="text-2xl font-semibold">$31500</CardTitle>
-            <span className="text-primary">Your total subscription cost</span>
+            <span className="text-foreground">Your total subscription cost</span>
           </div>
         </CardHeader>
 
@@ -81,7 +94,7 @@ const Subscription = () => {
               </TableBody>
             </Table>
           </div> */}
-          <InvoiceTable/>
+          <InvoiceTable />
         </CardContent>
       </Card>
     </div>

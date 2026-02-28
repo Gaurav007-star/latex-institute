@@ -61,7 +61,7 @@ const chartConfig = {
 const Dashboard = () => {
   return (
     <div className="w-full h-max">
-      {/* <div className="header w-full h-max px-5 pt-5 flex items-center gap-1 text-[20px] font-semibold text-primary">
+      {/* <div className="header w-full h-max px-5 pt-5 flex items-center gap-1 text-[20px] font-semibold text-foreground">
         <HiOutlineHome className="size-6" />
         <span>Admin {">"} Dashboard</span>
       </div> */}

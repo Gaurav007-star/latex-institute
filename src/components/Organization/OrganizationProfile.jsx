@@ -21,14 +21,16 @@ import {
   Cpu,
   User,
   Briefcase,
+  ImageIcon,
 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDropzone } from "react-dropzone";
 import { useCallback, useEffect, useState } from "react";
 import { CustomMainModal } from "../custom/CustomMainModal";
 import { HiOutlineUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux"; // Added Redux import
 import { fetchInstituteDetails } from "@/store/slices/userSlice";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "../ui/breadcrumb";
 
 export default function OrganizationProfile() {
   const navigate = useNavigate();
@@ -61,10 +63,6 @@ export default function OrganizationProfile() {
       resignation: "",
     },
   });
-
-  useEffect(() => {
-    dispatch(fetchInstituteDetails())
-  }, [])
 
   // Populate state when Redux data loads
   useEffect(() => {
@@ -109,21 +107,40 @@ export default function OrganizationProfile() {
 
   return (
     <div className="p-6 space-y-6 w-full mx-auto">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/organization">Organization</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      
       {/* Header / Overview */}
       <Card>
         <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-xl bg-muted flex items-center justify-center text-sm">
-              Logo
-            </div>
+            <CustomMainModal
+              trigger={<div className="h-16 w-16 group rounded-xl bg-muted flex items-center justify-center text-sm cursor-pointer">
+                <span className="group-hover:hidden">Logo</span>
+                <ImageIcon size={16} className="hidden group-hover:block" />
+              </div>}
+              Content={<ImportFileComponent />}
+            />
+
             <div>
               <h1 className="text-2xl font-semibold">
                 {instituteData.basicInfo.officialName || "Loading..."}
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-accent">
                 Institute ID: {institute?.institute_code || "N/A"}
               </p>
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-2 text-white">
                 <Badge>{institute?.status === "active" ? "Active" : "Inactive"}</Badge>
               </div>
             </div>
@@ -142,10 +159,10 @@ export default function OrganizationProfile() {
               View Billing
             </Button>
 
-            <CustomMainModal
+            {/* <CustomMainModal
               trigger={<Button>Upload Logo</Button>}
               Content={<ImportFileComponent />}
-            />
+            /> */}
           </div>
         </CardContent>
       </Card>
@@ -328,7 +345,7 @@ const ImportFileComponent = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div className="import-section w-[400px] h-max">
+    <div className="import-section w-[400px] h-max ">
       <div
         {...getRootProps()}
         className="bg-muted w-full h-[200px] rounded-md flex items-center justify-center"
@@ -337,7 +354,7 @@ const ImportFileComponent = () => {
         {isDragActive ? (
           <p>Drop the files here ...</p>
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer p-6 text-center dark:text-accent ">
+          <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer p-6 text-center dark:text-accent bg-muted">
             <HiOutlineUpload className="size-10" />
             <p className="w-50">
               Drag and drop some files here, or click to select files

@@ -12,6 +12,7 @@ import Report from "./components/report/Report";
 import SupportPage from "./Page/Support/SupportPage";
 import { SidebarInset } from "./components/ui/sidebar";
 import UserComponent from "./Page/User/UserComponent";
+import { FaRobot } from "react-icons/fa";
 
 const Layout = () => {
   const location = useLocation();
@@ -23,21 +24,21 @@ const Layout = () => {
   return (
     <>
       {!hideSidebar && <AppSidebar />}
-      <SidebarInset>
+      {/* <SidebarInset> */}
         <Routes>
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
-            <Route index element={<Navigate to="organization" replace />} />
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<Report />} />
             <Route path="organization" element={<OrganizationPage />} />
-            <Route path="report" element={<Report />} />
             <Route path="billing" element={<Subscription />} />
             <Route path="user" element={<UserComponent />} />
             <Route path="support" element={<SupportPage />} />
           </Route>
           <Route path="/signin" element={<SigninPage />} />
-          <Route path="*" element={<ProtectedRoute><Navigate to="/organization" replace /></ProtectedRoute>} />
+          <Route path="*" element={<ProtectedRoute><Navigate to="/dashboard" replace /></ProtectedRoute>} />
 
         </Routes>
-      </SidebarInset>
+      {/* </SidebarInset> */}
     </>
   );
 };

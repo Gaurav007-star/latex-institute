@@ -38,11 +38,13 @@ import { HiDocument, HiDocumentReport } from "react-icons/hi";
 import Logo from "@/assets/logo.png";
 import DarkLogo from "@/assets/dark-beta-logo.png";
 import { useTheme } from "@/context/ThemeProvider";
+import { useSelector } from "react-redux";
 
 
 
 // Menu items.
 const items = [
+  { title: "Dasboard", url: "/dashboard", icon: HiDocumentReport },
   {
     title: "Organization",
     url: "/organization",
@@ -53,7 +55,6 @@ const items = [
     url: "/user",
     icon: User,
   },
-  { title: "Report", url: "/report", icon: HiDocumentReport },
   {
     title: "Billing",
     url: "/billing",
@@ -96,7 +97,9 @@ export function AppSidebar() {
   const [selectedItem, setSelectedItem] = useState("List");
   const location = useLocation();
   const [openIndex, setOpenIndex] = useState(null);
-  const {theme} = useTheme();
+  const { theme } = useTheme();
+  const { institute } = useSelector((state) => state.User)
+
 
   // Auto-close when route changes (optional but usually desired)
   useEffect(() => {
@@ -104,14 +107,14 @@ export function AppSidebar() {
   }, [location.pathname]);
 
   return (
-    <Sidebar variant="inset">
+    <Sidebar variant="sidebar">
       <SidebarContent>
         <SidebarGroup className={`flex flex-col justify-between! w-full h-full`}>
           <div className="top-section">
             <SidebarGroupLabel
-              className={`text-primary font-semibold text-[30px] mt-3`}
+              className={`text-foreground font-semibold text-lg mt-3`}
             >
-              Latexio
+              {institute && institute.name}
             </SidebarGroupLabel>
 
             <SidebarGroupContent>
@@ -120,14 +123,14 @@ export function AppSidebar() {
                   <SidebarMenuItem
                     key={item.title}
                     className={clsx(
-                      "w-full flex items-center justify-between px-4 py-2 rounded-2xl text-[18px] hover:bg-primary/10 hover:text-primary transition-transform cursor-pointer",
+                      "w-full flex items-center justify-between rounded-2xl text-[18px] cursor-pointer",
                       location.pathname === item.url
-                        ? "text-primary font-semibold bg-primary/10"
+                        ? "text-white font-semibold bg-primary"
                         : ""
                     )}
                   >
                     <SidebarMenuButton asChild>
-                      <Link to={item.url} className="">
+                      <Link to={item.url} className="h-full px-4! py-4! ">
                         <item.icon />
                         {item.title}
                       </Link>
@@ -146,9 +149,9 @@ export function AppSidebar() {
                         type="button"
                         onClick={() => setOpenIndex(isOpen ? null : index)}
                         className={clsx(
-                          "w-full flex items-center justify-between px-4 py-2 rounded-md text-[18px] hover:bg-primary/10 transition-all cursor-pointer",
+                          "w-full flex items-center justify-between px-4 py-2 rounded-md text-[18px] cursor-pointer",
                           list.sublists.some((s) => location.pathname === s.url)
-                            ? "text-primary font-semibold bg-primary/10"
+                            ? "text-white font-semibold bg-primary"
                             : ""
                         )}
                       >
@@ -168,7 +171,7 @@ export function AppSidebar() {
                       </button>
 
                       {/* SUBLIST DROPDOWN */}
-                      <AnimatePresence initial={false}>
+                      {/* <AnimatePresence initial={false}>
                         {isOpen && (
                           <motion.ul
                             initial={{ height: 0, opacity: 0 }}
@@ -186,9 +189,9 @@ export function AppSidebar() {
                                       setSelectedItem(item.title);
                                     }}
                                     className={clsx(
-                                      "flex items-center gap-2 p-6 my-1 rounded-md hover:!bg-primary/10 transition-all",
+                                      "flex items-center gap-2 p-6 my-1 rounded-md hover:!bg-primary transition-all",
                                       location.pathname === item.url
-                                        ? "text-primary font-semibold bg-primary/10"
+                                        ? "text-foreground font-semibold bg-primary/10"
                                         : ""
                                     )}
                                   >
@@ -199,7 +202,7 @@ export function AppSidebar() {
                             ))}
                           </motion.ul>
                         )}
-                      </AnimatePresence>
+                      </AnimatePresence> */}
                     </SidebarMenuItem>
                   );
                 })}
@@ -212,7 +215,7 @@ export function AppSidebar() {
           </div>
 
           <SidebarFooter>
-            <img src={theme === "light" ? DarkLogo : Logo} alt="" className="w-full h-10" />
+            <img src={theme === "light" ? DarkLogo : Logo} alt="" className="w-fit h-10" />
           </SidebarFooter>
         </SidebarGroup>
       </SidebarContent>

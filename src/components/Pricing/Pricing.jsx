@@ -69,7 +69,7 @@ const Pricing = () => {
             <Button
               variant={"outline"}
               className={clsx(
-                `w-[100px] bg-secondary hover:text-primary transition-all duration-200 cursor-pointer border-none rounded-xl`,
+                `w-[100px] bg-secondary hover:text-foreground transition-all duration-200 cursor-pointer border-none rounded-xl`,
                 selectedPrice === "monthly" && "bg-primary text-secondary"
               )}
               id="monthly"
@@ -81,7 +81,7 @@ const Pricing = () => {
             <Button
               variant={"outline"}
               className={clsx(
-                `w-[100px] bg-secondary hover:text-primary transition-all duration-200 cursor-pointer border-none rounded-xl`,
+                `w-[100px] bg-secondary hover:text-foreground transition-all duration-200 cursor-pointer border-none rounded-xl`,
                 selectedPrice === "yearly" && "bg-primary text-secondary"
               )}
               id="yearly"

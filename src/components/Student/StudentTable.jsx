@@ -305,7 +305,6 @@ const StudentTable = ({ search }) => {
 
   return (
     <div className="w-full h-max rounded-xl border border-border overflow-hidden">
-      {/* TABLE SECTION */}
       <Table>
         <TableHeader className="bg-muted text-sm h-[8vh]">
           <TableRow>
@@ -374,11 +373,6 @@ const StudentTable = ({ search }) => {
 
                   <TableCell className="font-medium h-[8vh]">
                     <div className="flex items-center gap-3">
-                      <div className="size-8 rounded-full bg-accent flex items-center justify-center">
-                        <span className="font-medium">
-                          {student?.publicName.charAt(0)}
-                        </span>
-                      </div>
                       <span className="font-medium">{student?.publicName}</span>
                     </div>
                   </TableCell>

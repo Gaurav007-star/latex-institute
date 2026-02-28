@@ -69,12 +69,12 @@ export const searchUsersHandler = createAsyncThunk(
 
 export const addUserHandler = createAsyncThunk(
   "user/addUser",
-  async ({ allUsers, setLoading }, { rejectWithValue }) => {
+  async ({ user, setLoading }, { rejectWithValue }) => {
     try {
       setLoading(true);
       const response = await apiFetch(`/institute/users/map`, {
         method: "POST",
-        body: JSON.stringify(allUsers)
+        body: JSON.stringify(user)
       });
 
       // Ensure the response is successful and contains the institute object
